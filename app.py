@@ -4,6 +4,7 @@ from flask import request
 from flask_cors import CORS
 from flask_pymongo import pymongo
 import json
+import datetime
 # from dotenv import load_dotenv
 # load_dotenv()
 
@@ -46,6 +47,47 @@ class Class1(Resource):
   def post(self):
     return {'data': 'This is post'}
 
+@app.route("/getNews", methods=["POST"])
+def get_news():
+    try:
+      print("request --", json.loads(request.data))
+      data= json.loads(request.data)
+      from_str = data["from_str"]
+      end_str = data["end_str"]
+      if(data["stock"]):
+        query={
+          "stock": data["stock"],
+          "date":{
+            '$gte':from_str,
+            '$lte' : end_str
+          }
+        }  
+      else:
+        query={
+          "date":{
+            '$gte':from_str,
+            '$lte' : end_str
+          }
+        }
+      
+      res = db.news.find(query)
+      lst=[]
+      for x in res:
+        x['_id'] = str(x['_id'])
+        lst.append(x)
+      
+      print(lst)
+      return Response(
+      response=json.dumps({
+        "message":"News Received",
+        "data":lst
+      }),
+      status = 200,
+      mimetype="application/json"
+      )
+    except Exception as ex:
+      print(" Exception --- ", ex)
+
 @app.route("/insertNews",methods = ["POST"])
 def insert_news():
   try:
@@ -59,8 +101,13 @@ def insert_news():
 
     print("request --", json.loads(request.data))
     data = json.loads(request.data)
+    date_str = data["date"] # The date - 29 Dec 2017
+    format_str = '%d%m%Y' # The format
+    datetime_obj = datetime.datetime.strptime(date_str, format_str)
+    # print(datetime_obj.date())
+    date_str = str(datetime_obj.date())
     newsexample={
-      "date" : data["date"],
+      "date" : date_str,
       "news" : data["news"],
       "stock" : data["stock"],
       "status" : data["status"],
