@@ -1,5 +1,17 @@
 # major-project-backend
 
+
+Installation Instructions - 
+```
+pip install flask flask_pymongo flask_cors flask_restful
+```
+
+To Run the code - 
+
+```
+python app.py
+```
+
 The APIs are as follows - 
 
 1) Insert one News API - 
