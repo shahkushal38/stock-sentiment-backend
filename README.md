@@ -6,6 +6,23 @@ Installation Instructions -
 pip install flask flask_pymongo flask_cors flask_restful
 ```
 
+### Local Setup
+
+# Clone this repository
+$ git clone https://github.com/J0SAL/major-project-backend.git
+# Go into the repository
+$ cd major-project-backend
+# Create & Activate Environment (optional & recommended) here's a sample code
+$ python -m venv project_env
+$ project_env\Scripts\activate.bat
+# Install dependencies
+pip -r requirements.txt
+# Run the app
+python app.py
+# The server will start at <http://localhost:8080>
+
+
+
 To Run the code - 
 
 ```
