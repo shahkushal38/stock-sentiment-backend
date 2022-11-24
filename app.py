@@ -4,9 +4,10 @@ from flask import request
 from flask_cors import CORS
 from flask_pymongo import pymongo
 import json
+import os
 import datetime
-# from dotenv import load_dotenv
-# load_dotenv()
+from dotenv import load_dotenv
+load_dotenv()
 
 
 app = Flask(__name__)
@@ -20,7 +21,7 @@ CORS(app)
 # ---------------DB models : start-------------
 
 try:
-  connection_string = "mongodb+srv://kushal:kushal@stock-sentiment.qcwkphz.mongodb.net/?retryWrites=true&w=majority"
+  connection_string = os.environ.get('MONGO_URI')
   mongo = pymongo.MongoClient(
     connection_string
   )
@@ -186,6 +187,6 @@ api.add_resource(Class1, '/')
 
 
 if __name__ == '__main__':
-  print("Port running succesfully")
-  app.run(port=80,debug="True")
+  # print("Port running succesfully")
+  app.run(debug="True")
   
