@@ -22,7 +22,7 @@ $ project_env\Scripts\activate.bat
 pip -r requirements.txt
 # Run the app
 python app.py
-# The server will start at <http://localhost:8080>
+# The server will start at <http://localhost:5000>
 ```
 
 

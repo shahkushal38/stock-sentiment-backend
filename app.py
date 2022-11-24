@@ -26,6 +26,7 @@ try:
     connection_string
   )
   db = mongo.get_database('Stock-Sentiment')
+  news = db.news
   print("Connection Established")
   mongo.server_info() #trigger exception if server cannot connect to db
   
@@ -177,6 +178,21 @@ def insert_news():
     )
   except Exception as ex:
     print(" Exception --- ", ex)
+
+@app.route("/getAllNews", methods = ["GET"])
+def get_all_news():
+  try:
+    all_news = news.find()
+    res = []
+    for obj in all_news:
+      obj['_id'] = str(obj['_id'])
+      res.append(obj)
+    return {
+      'message': 'All news',
+      'data': res,
+    }, 201
+  except Exception as e:
+    return {'message': 'Server Error' + str(e)}, 500
 
 
 
