@@ -6,6 +6,7 @@ Installation Instructions -
 pip install flask flask_pymongo flask_cors flask_restful
 ```
 
+```bash
 ### Local Setup
 
 # Clone this repository
@@ -20,7 +21,7 @@ pip -r requirements.txt
 # Run the app
 python app.py
 # The server will start at <http://localhost:8080>
-
+```
 
 
 To Run the code - 
