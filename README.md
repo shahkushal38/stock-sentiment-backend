@@ -1,5 +1,7 @@
 # major-project-backend
 
+### Deployed Link
+- https://stockvisualizer-api.herokuapp.com/
 
 Installation Instructions - 
 ```
