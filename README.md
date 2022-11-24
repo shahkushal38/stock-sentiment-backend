@@ -3,14 +3,9 @@
 ### Deployed Link
 - https://stockvisualizer-api.herokuapp.com/
 
-Installation Instructions - 
-```
-pip install flask flask_pymongo flask_cors flask_restful
-```
-
-```bash
 ### Local Setup
 
+```bash
 # Clone this repository
 $ git clone https://github.com/J0SAL/major-project-backend.git
 # Go into the repository
@@ -26,11 +21,6 @@ python app.py
 ```
 
 
-To Run the code - 
-
-```
-python app.py
-```
 
 The APIs are as follows - 
 
