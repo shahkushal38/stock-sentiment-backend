@@ -92,3 +92,30 @@ Request Object -
 	"stock": "Sun Pharma"
 }
 ```
+
+
+4) Get Sentiment for a duration
+
+**URL - http://127.0.0.1/findSentiment**
+
+Request Object - 
+
+```
+{
+	"from_str" : "2015-01-01",
+	"end_str": "2019-11-06",
+	"stock": "Sun Pharma"
+}
+```
+
+Response Object - 
+
+```
+
+{
+	"message": "Success",
+	"averageSentiment": -0.975,
+	"totalNews": 3,
+	"totalConfidence": -2.925
+}
+```
