@@ -47,6 +47,56 @@ class Class1(Resource):
   def post(self):
     return {'data': 'This is post'}
 
+@app.route("/findSentiment", methods = ["POST"])
+def find_sentiment():
+  try:
+    print("request --", json.loads(request.data))
+    data= json.loads(request.data)
+    from_str = data["from_str"]
+    end_str = data["end_str"]
+    if(data["stock"]==""):
+      raise Exception("Stock name is required")
+    res = db.news.aggregate([
+      {
+        "$match":{
+          "stock": data["stock"],
+          "date":{
+            '$gte':from_str,
+            '$lte' : end_str
+        }
+        }
+      },
+      {
+        "$group":{
+          "_id":"$stock",
+          "sentimentSum":{"$sum":"$confidence"},
+          "sentimentCount":{"$sum":1}
+        }
+      }
+
+    ])
+
+    lst=[]
+    for x in res:
+      lst.append(x)
+    
+    print(lst[0])
+    average = lst[0]["sentimentSum"]/lst[0]["sentimentCount"]
+    return Response(
+      response=json.dumps({
+        "message":"Success",
+        "averageSentiment":average,
+        "totalNews":lst[0]["sentimentCount"],
+        "totalConfidence": lst[0]["sentimentSum"]
+      }),
+      status = 200,
+      mimetype="application/json"
+    )
+
+  except Exception as ex:
+    print(" Exception --- ", ex)
+
+
 @app.route("/getNews", methods=["POST"])
 def get_news():
     try:
@@ -110,6 +160,7 @@ def insert_news():
       "date" : date_str,
       "news" : data["news"],
       "stock" : data["stock"],
+      "URL": data["URL"],
       "status" : data["status"],
       "confidence" : data["confidence"]
       }
