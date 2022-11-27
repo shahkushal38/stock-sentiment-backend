@@ -256,17 +256,17 @@ def insert_news_api():
 #   except Exception as e:
 #     return {'message': 'Server Error' + str(e)}, 500
 
-@app.route("/getConfidence", methods = ["POST"])
-def get_confidence():
-  try:
-    data = json.loads(request.data)
-    confidence = predict_sentiment(data["news"])[0]
-    return {
-      "message":"Confidence Received",
-      "confidence": float(confidence)
-    }
-  except Exception as ex:
-    print(" Exception ", ex)
+# @app.route("/getConfidence", methods = ["POST"])
+# def get_confidence():
+#   try:
+#     data = json.loads(request.data)
+#     confidence = predict_sentiment(data["news"])[0]
+#     return {
+#       "message":"Confidence Received",
+#       "confidence": float(confidence)
+#     }
+#   except Exception as ex:
+#     print(" Exception ", ex)
 
 @app.route("/insertAllNews", methods = ["POST"])
 def insert_allnews():
@@ -297,12 +297,11 @@ def insert_BulkNews():
       sentimentRes = predict_sentiment(data[x]["news"])
       data[x]["status"]=sentimentRes[1]
       data[x]["confidence"]=sentimentRes[0]
-    print("request2 -- ", data)
-    # dbresponse=db.news.insert_many(data)
+    dbresponse=db.news.insert_many(data)
     if(dbresponse):
       return Response(
         response=json.dumps({
-          "message":"News Inserted"
+          "message":"News Inserted with confidence and status"
         }),
         status = 200,
         mimetype="application/json"

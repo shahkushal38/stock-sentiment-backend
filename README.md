@@ -131,3 +131,56 @@ Response Object -
 	"positiveNewsCount": 1
 }
 ```
+
+
+5) Insert all news
+
+**URL - http://127.0.0.1:5000/insertAllNews**
+
+```
+Request Object -  List of stocks
+ 
+[
+ {
+   "date": "04-10-2022",
+   "news": "Sun Pharma announces positive results in phase 3 study of eye care drug",
+   "URL": "http://economictimes.indiatimes.com/industry/healthcare/biotech/pharmaceuticals/sun-pharma-announces-positive-results-in-phase-3-study-of-eye-care-drug/articleshow/56336584.cms",
+   "status": "POSITIVE",
+   "confidence": 0.992504478,
+   "stock": "Sun Pharma"
+ },
+ {
+   "date": "05-07-2022",
+   "news": "Opening bell : Asian markets open mixed ; Fortis Healthcare , SBI , Sun Pharma in news",
+   "URL": "http://www.livemint.com/Money/TOH8UAQ7MN2HnHzNxH6uWJ/Opening-bell-Asian-markets-open-mixed-Fortis-Healthcare-S.html",
+   "status": "POSITIVE",
+   "confidence": 0.757342756,
+   "stock": "Sun Pharma"
+ }
+ ]
+```
+
+ 6) Insert Bulk News for Sentiment
+ 
+ **URL - http://127.0.0.1:5000/insertBulkNewsSentiment**
+
+
+```
+Request Object  (list of object without status and confidence) - 
+
+[
+ {
+   "date": "2022-08-04",
+   "news": "Sun Pharma announces positive results in phase 3 study of eye care drug",
+   "URL": "http://economictimes.indiatimes.com/industry/healthcare/biotech/pharmaceuticals/sun-pharma-announces-positive-results-in-phase-3-study-of-eye-care-drug/articleshow/56336584.cms",
+   "stock": "Sun Pharma"
+ },
+ {
+   "date": "2022-07-05",
+   "news": "Opening bell : Asian markets open mixed ; Fortis Healthcare , SBI , Sun Pharma in news",
+   "URL": "http://www.livemint.com/Money/TOH8UAQ7MN2HnHzNxH6uWJ/Opening-bell-Asian-markets-open-mixed-Fortis-Healthcare-S.html",
+   "stock": "Sun Pharma"
+ }
+]
+```
+
