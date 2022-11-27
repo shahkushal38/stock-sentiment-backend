@@ -9,6 +9,8 @@ import datetime
 from dotenv import load_dotenv
 load_dotenv()
 
+from prediction import predict_sentiment
+
 
 app = Flask(__name__)
 CORS(app)
@@ -179,6 +181,39 @@ def insert_news():
   except Exception as ex:
     print(" Exception --- ", ex)
 
+@app.route("/insertNewsApi",methods = ["POST"])
+def insert_news_api():
+  try:
+    print("request --", json.loads(request.data))
+    data = json.loads(request.data)
+    date_str = data["date"] # The date - 29 Dec 2017
+    format_str = '%d%m%Y' # The format
+    datetime_obj = datetime.datetime.strptime(date_str, format_str)
+    # print(datetime_obj.date())
+    date_str = str(datetime_obj.date())
+
+    confidence = predict_sentiment(data["news"])
+    newsexample={
+      "date" : date_str,
+      "news" : data["news"],
+      "stock" : data["stock"],
+      "URL": data["URL"],
+      "status" : data["status"],
+      "confidence" : confidence
+      }
+    print("news --", newsexample)
+    dbresponse=db.news.insert_one(newsexample)
+    return Response(
+      response=json.dumps({
+        "message":"News Inserted",
+        "id":f"{dbresponse.inserted_id}"
+      }),
+      status = 200,
+      mimetype="application/json"
+    )
+  except Exception as ex:
+    print(" Exception --- ", ex)
+
 @app.route("/getAllNews", methods = ["GET"])
 def get_all_news():
   try:
@@ -194,7 +229,17 @@ def get_all_news():
   except Exception as e:
     return {'message': 'Server Error' + str(e)}, 500
 
-
+@app.route("/getConfidence", methods = ["POST"])
+def get_confidence():
+  try:
+    data = json.loads(request.data)
+    confidence = predict_sentiment(data["news"])
+    return {
+      "message":"Confidence Received",
+      "confidence": float(confidence)
+    }
+  except Exception as ex:
+    print(" Exception ", ex)
 
 # ---------------API views : end---------------
 
