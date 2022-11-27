@@ -36,6 +36,6 @@ def preprocess(s_input):
 def predict_sentiment(input):
     processed_input = preprocess(input)
     pred=model.predict(processed_input)
-    return pred[0][0] * 100
+    return pred[0][0]
 
 # print(predict_sentiment("I love this movie"))
