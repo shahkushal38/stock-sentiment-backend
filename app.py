@@ -80,18 +80,43 @@ def find_sentiment():
 
     ])
 
+    res1 = db.news.aggregate([
+      {
+        "$match":{
+          "stock": data["stock"],
+          "status":"positive",
+          "date":{
+            '$gte':from_str,
+            '$lte' : end_str
+        }
+        }
+      },
+      {
+        "$group":{
+          "_id":"$stock",
+          "positiveCount":{"$sum":1}
+        }
+      }
+
+    ])
+
     lst=[]
     for x in res:
       lst.append(x)
     
-    print(lst[0])
+    for x in res1:
+      if(x):
+        lst.append(x)
+    print("List--")  
+    print(lst)
     average = lst[0]["sentimentSum"]/lst[0]["sentimentCount"]
     return Response(
       response=json.dumps({
         "message":"Success",
         "averageSentiment":average,
         "totalNews":lst[0]["sentimentCount"],
-        "totalConfidence": lst[0]["sentimentSum"]
+        "totalConfidence": lst[0]["sentimentSum"],
+        "positiveNewsCount":lst[1]["positiveCount"]
       }),
       status = 200,
       mimetype="application/json"

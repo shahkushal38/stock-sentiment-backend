@@ -3,6 +3,9 @@
 ### Deployed Link
 - https://stockvisualizer-api.herokuapp.com/
 
+### For Local
+- http://127.0.0.1:5000 
+
 ### Local Setup
 
 ```bash
@@ -125,7 +128,8 @@ Response Object -
 {
 	"message": "Success",
 	"averageSentiment": -0.975,
-	"totalNews": 3,
-	"totalConfidence": -2.925
+	"totalNews": 4,
+	"totalConfidence": -3.9,
+	"positiveNewsCount": 1
 }
 ```
