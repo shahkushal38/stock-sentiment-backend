@@ -84,7 +84,7 @@ def find_sentiment():
       {
         "$match":{
           "stock": data["stock"],
-          "status":"positive",
+          "status":"POSITIVE",
           "date":{
             '$gte':from_str,
             '$lte' : end_str
@@ -217,13 +217,15 @@ def insert_news_api():
     # print(datetime_obj.date())
     date_str = str(datetime_obj.date())
 
-    confidence = predict_sentiment(data["news"])
+    confidenceLst = predict_sentiment(data["news"])
+    confidence = confidenceLst[0]
+    status = confidenceLst[1]
     newsexample={
       "date" : date_str,
       "news" : data["news"],
       "stock" : data["stock"],
       "URL": data["URL"],
-      "status" : data["status"],
+      "status" : status,
       "confidence" : confidence
       }
     print("news --", newsexample)
@@ -239,32 +241,76 @@ def insert_news_api():
   except Exception as ex:
     print(" Exception --- ", ex)
 
-@app.route("/getAllNews", methods = ["GET"])
-def get_all_news():
-  try:
-    all_news = news.find()
-    res = []
-    for obj in all_news:
-      obj['_id'] = str(obj['_id'])
-      res.append(obj)
-    return {
-      'message': 'All news',
-      'data': res,
-    }, 201
-  except Exception as e:
-    return {'message': 'Server Error' + str(e)}, 500
+# @app.route("/getAllNews", methods = ["GET"])
+# def get_all_news():
+#   try:
+#     all_news = news.find()
+#     res = []
+#     for obj in all_news:
+#       obj['_id'] = str(obj['_id'])
+#       res.append(obj)
+#     return {
+#       'message': 'All news',
+#       'data': res,
+#     }, 201
+#   except Exception as e:
+#     return {'message': 'Server Error' + str(e)}, 500
 
-@app.route("/getConfidence", methods = ["POST"])
-def get_confidence():
+# @app.route("/getConfidence", methods = ["POST"])
+# def get_confidence():
+#   try:
+#     data = json.loads(request.data)
+#     confidence = predict_sentiment(data["news"])
+#     return {
+#       "message":"Confidence Received",
+#       "confidence": float(confidence)
+#     }
+#   except Exception as ex:
+#     print(" Exception ", ex)
+
+@app.route("/insertAllNews", methods = ["POST"])
+def insert_allnews():
   try:
+    print("request --", json.loads(request.data))
     data = json.loads(request.data)
-    confidence = predict_sentiment(data["news"])
-    return {
-      "message":"Confidence Received",
-      "confidence": float(confidence)
-    }
+    dbresponse=db.news.insert_many(data)
+    if(dbresponse):
+      return Response(
+        response=json.dumps({
+          "message":"News Inserted"
+        }),
+        status = 200,
+        mimetype="application/json"
+      )
+    else:
+      raise Exception("Error occurred ")
   except Exception as ex:
-    print(" Exception ", ex)
+    print(" Exception --- ", ex)
+
+@app.route("/insertBulkNewsSentiment", methods = ["POST"])
+def insert_BulkNews():
+  try:
+    print("request --", json.loads(request.data))
+    data = json.loads(request.data)
+    print("data--", data[1])
+    for x in range(0,len(data),1):
+      sentimentRes = predict_sentiment(data[x]["news"])
+      x["status"]=sentimentRes[1]
+      x["confidence"]=sentimentRes[0]
+    print("request2 -- ", data)
+    # dbresponse=db.news.insert_many(data)
+    if(dbresponse):
+      return Response(
+        response=json.dumps({
+          "message":"News Inserted"
+        }),
+        status = 200,
+        mimetype="application/json"
+      )
+    else:
+      raise Exception("Error occurred ")
+  except Exception as ex:
+    print(" Exception --- ", ex)
 
 # ---------------API views : end---------------
 

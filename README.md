@@ -39,9 +39,7 @@ Request Object =
 >{
        "date" : "06102018",
        "news" : "Cautious on pharma , time to get into IT",
-       "stock" : "Sun Pharma",
-       "status" : "negative",
-       "confidence" : -0.975
+       "stock" : "Sun Pharma"
 }
 
 Response Object - 
