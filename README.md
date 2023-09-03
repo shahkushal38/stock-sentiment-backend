@@ -22,6 +22,9 @@ pip -r requirements.txt
 python app.py
 # The server will start at <http://localhost:5000>
 ```
+### Project Backend in Colab - 
+
+https://colab.research.google.com/drive/1mdZIxhOfAkJA0XsnSYyyVKMCK5jjBaU8#scrollTo=Pt6ghK_Dr60o
 
 
 
